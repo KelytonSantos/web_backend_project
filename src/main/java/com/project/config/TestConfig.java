@@ -14,15 +14,16 @@ import com.project.repositories.UserRepository;
 @Profile("test")
 public class TestConfig implements CommandLineRunner {
 
-    @Autowired
-    private UserRepository userRepository;
+    // @Autowired
+    // private UserRepository userRepository;
 
     @Override
     public void run(String... args) throws Exception {
-        User u1 = new User(null, "Lucas", "lucas@santos.com", "99991929", "1234567");
-        User u2 = new User(null, "Kelyton", "Kelyton@santos.com", "996269220", "123546");
+        // User u1 = new User(null, "Lucas", "lucas@santos.com", "99991929", "1234567");
+        // User u2 = new User(null, "Kelyton", "Kelyton@santos.com", "996269220",
+        // "123546");
 
-        userRepository.saveAll(Arrays.asList(u1, u2));
+        // userRepository.saveAll(Arrays.asList(u1, u2));
 
     }
 
