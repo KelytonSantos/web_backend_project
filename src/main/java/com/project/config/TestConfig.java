@@ -10,11 +10,13 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.entities.Order;
+import com.project.entities.Product;
 import com.project.entities.User;
 import com.project.entities.Category;
 import com.project.entities.enums.OrderStatus;
 import com.project.repositories.CategoryRepository;
 import com.project.repositories.OrderRepository;
+import com.project.repositories.ProductRepository;
 import com.project.repositories.UserRepository;
 
 import jakarta.persistence.EntityManager;
@@ -25,6 +27,7 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private OrderRepository orderRepository;
 
@@ -34,6 +37,9 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     @Override
     @Transactional
     public void run(String... args) throws Exception {
@@ -41,10 +47,25 @@ public class TestConfig implements CommandLineRunner {
         orderRepository.deleteAll();
         userRepository.deleteAll();
         categoryRepository.deleteAll();
+        productRepository.deleteAll();
 
         resetSequence("tb_user_id_seq");
         resetSequence("tb_order_id_seq");
         resetSequence("tb_category_id_seq");
+        resetSequence("tb_product_id_seq");
+
+        Product p1 = new Product(null, "The Lord of the Rings", "Lorem ipsum dolor sit amet, consectetur.", 90.5, "");
+        Product p2 = new Product(null, "Smart TV", "Nulla eu imperdiet purus. Maecenas ante.", 2190.0, "");
+        Product p3 = new Product(null, "Macbook Pro", "Nam eleifend maximus tortor, at mollis.", 1250.0, "");
+        Product p4 = new Product(null, "PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, "");
+        Product p5 = new Product(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
+        productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+
+        Category c1 = new Category(null, "Eletronics");
+        Category c2 = new Category(null, "Books");
+        Category c3 = new Category(null, "Computers");
+
+        categoryRepository.saveAll(Arrays.asList(c1, c2, c3));
 
         User u1 = new User(null, "Lucas", "lucas@santos.com", "99991929", "1234567");
         User u2 = new User(null, "Kelyton", "Kelyton@santos.com", "996269220", "123546");
@@ -57,11 +78,6 @@ public class TestConfig implements CommandLineRunner {
 
         orderRepository.saveAll(Arrays.asList(o1, o2, o3));
 
-        Category c1 = new Category(null, "Eletronics");
-        Category c2 = new Category(null, "Books");
-        Category c3 = new Category(null, "Computers");
-
-        categoryRepository.saveAll(Arrays.asList(c1, c2, c3));
     }
 
     private void resetSequence(String sequenceName) {
