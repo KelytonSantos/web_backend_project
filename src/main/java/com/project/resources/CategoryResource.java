@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.entities.Category;
 import com.project.service.CategoryService;
 
+import jakarta.transaction.Transactional;
+
 @RestController
 @RequestMapping(value = "/categories")
 public class CategoryResource {
@@ -19,7 +21,8 @@ public class CategoryResource {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/all")
+    @GetMapping
+    @Transactional
     public ResponseEntity<List<Category>> findAll() {
         List<Category> list = categoryService.findAll();
 

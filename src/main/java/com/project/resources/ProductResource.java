@@ -19,7 +19,7 @@ public class ProductResource {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Product>> findAll() {
         List<Product> list = productService.findAll();
 
