@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.project.entities.Order;
 import com.project.entities.OrderItem;
+import com.project.entities.Payment;
 import com.project.entities.Product;
 import com.project.entities.User;
 import com.project.entities.Category;
@@ -83,5 +84,10 @@ public class TestConfig implements CommandLineRunner {
         OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
 
         orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+
+        Payment pay1 = new Payment(null, Instant.parse("2024-08-16T21:53:07Z"), o1);
+        o1.setPayments(pay1);
+
+        orderRepository.save(o1);
     }
 }
