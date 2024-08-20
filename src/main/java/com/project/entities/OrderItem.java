@@ -2,6 +2,9 @@ package com.project.entities;
 
 import java.io.Serializable;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.entities.pk.OrderItemPK;
 
@@ -39,6 +42,7 @@ public class OrderItem implements Serializable {
         id.setOrder(order);
     }
 
+    @Fetch(FetchMode.JOIN)
     public Product getProduct() {
         return id.getProduct();
     }
