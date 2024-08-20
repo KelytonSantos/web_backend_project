@@ -10,16 +10,16 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.entities.Order;
+import com.project.entities.OrderItem;
 import com.project.entities.Product;
 import com.project.entities.User;
 import com.project.entities.Category;
 import com.project.entities.enums.OrderStatus;
 import com.project.repositories.CategoryRepository;
+import com.project.repositories.OrderItemRepository;
 import com.project.repositories.OrderRepository;
 import com.project.repositories.ProductRepository;
 import com.project.repositories.UserRepository;
-
-import jakarta.persistence.EntityManager;
 
 @Configuration
 @Profile("test")
@@ -32,27 +32,17 @@ public class TestConfig implements CommandLineRunner {
     private OrderRepository orderRepository;
 
     @Autowired
-    private EntityManager entityManager;
-
-    @Autowired
     private CategoryRepository categoryRepository;
 
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-
-        orderRepository.deleteAll();
-        userRepository.deleteAll();
-        categoryRepository.deleteAll();
-        productRepository.deleteAll();
-
-        resetSequence("tb_user_id_seq");
-        resetSequence("tb_order_id_seq");
-        resetSequence("tb_category_id_seq");
-        resetSequence("tb_product_id_seq");
 
         Product p1 = new Product(null, "The Lord of the Rings", "Lorem ipsum dolor sit amet, consectetur.", 90.5, "");
         Product p2 = new Product(null, "Smart TV", "Nulla eu imperdiet purus. Maecenas ante.", 2190.0, "");
@@ -87,10 +77,11 @@ public class TestConfig implements CommandLineRunner {
 
         orderRepository.saveAll(Arrays.asList(o1, o2, o3));
 
-    }
+        OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+        OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+        OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+        OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
 
-    private void resetSequence(String sequenceName) {
-        String query = "ALTER SEQUENCE " + sequenceName + " RESTART WITH 1";
-        entityManager.createNativeQuery(query).executeUpdate();
+        orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
     }
 }
