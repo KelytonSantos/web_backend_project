@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.entities.User;
-import com.project.exceptions.ResourceNotFoundException;
 import com.project.repositories.UserRepository;
+import com.project.service.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -22,7 +22,8 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> obj = userRepository.findById(id);
-        return obj.get(); // retorna o objeto que estiver no optional
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id)); // retorna o objeto que estiver no
+                                                                         // optional
     }
 
     public User insert(User obj) {
