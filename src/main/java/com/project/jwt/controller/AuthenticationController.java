@@ -51,7 +51,6 @@ public class AuthenticationController {
         User newUser = new User(data.name(), data.email(), data.phone(), encryptedPassword, data.role());
         repo.save(newUser);
         return ResponseEntity.ok().build();
-
     }
 
 }
