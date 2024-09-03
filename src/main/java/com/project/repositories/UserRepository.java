@@ -7,5 +7,5 @@ import com.project.entities.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    UserDetails findByLogin(String email);
+    UserDetails findByLogin(String login);
 }
