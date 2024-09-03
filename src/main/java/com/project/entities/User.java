@@ -1,10 +1,15 @@
 package com.project.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.entities.enums.UserRole;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,9 +20,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_user")
-public class User implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +29,7 @@ public class User implements Serializable {
     private String email;
     private String phone;
     private String password;
+    private UserRole role;
 
     @JsonIgnore
     @OneToMany(mappedBy = "client") // do outro lado esta mapeado pelo atributo client
@@ -40,6 +44,14 @@ public class User implements Serializable {
         this.email = email;
         this.phone = phone;
         this.password = password;
+    }
+
+    public User(String name, String email, String phone, String password, UserRole role) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.role = role;
     }
 
     public Long getId() {
@@ -109,6 +121,20 @@ public class User implements Serializable {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (role == UserRole.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        } else {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
 }
