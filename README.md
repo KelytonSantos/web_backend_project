@@ -43,5 +43,5 @@ O projeto implementa segurança via **JWT (JSON Web Token)**, permitindo:
 - Spring Security
 - JWT (jjwt)
 - JPA / Hibernate
-- Banco de dados relacional (H2, PostgreSQL ou MySQL)
-- Lombok
+- Banco de dados relacional (PostgreSQL)
+- Docker Compose
